@@ -1,0 +1,6 @@
+{
+    "name":"doctrine test",
+    "require":{
+        "doctrine/dbal": "~2.5"
+    }
+}
