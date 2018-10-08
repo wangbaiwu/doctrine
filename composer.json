@@ -1,6 +1,12 @@
 {
     "name":"doctrine test",
     "require":{
-        "doctrine/dbal": "~2.5"
+        "doctrine/dbal": "~2.5",
+        "symfony/yaml": "^3.4",
+        "symfony/console": "^3.4",
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {"": "src/"}
     }
 }
