@@ -14,7 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class MigrateProCommand
@@ -47,14 +48,62 @@ class DemoCommand extends Command
         $t=$input->getArguments();
         $config = new Configuration();
         $this->conn = DriverManager::getConnection($this->config['database'], $config);
-        $this->testDbal($output);
+        //$this->testPdoStatement($output);
+        $this->testQueryBuilder();
         $output->writeln('ccc');
     }
 
-    private function testDbal($output){
-        $t=$this->conn->fetchColumn("SELECT count(*) FROM demo");
+    private function testQueryBuilder(){
 
-        var_dump($t);
+        $isDevMode = true;
+        $config = Setup::createAnnotationMetadataConfiguration(array(ROOT_PATH."/src/Entity"), $isDevMode);
+        $entityManager = EntityManager::create($this->config['database'], $config);
+
+
+
+        /*
+        $queryBuilder = $this->conn->createQueryBuilder();
+        $id=2;
+        $q=$queryBuilder
+            ->select('name', 'age')
+            ->from('demo')
+            ->where('id = ?')
+            ->setParameter(0, $id)
+            ->getQuery();
+
+        $s=$queryBuilder->getSQL();
+        //$r=$queryBuilder->execute();
+        $r=$q->getResult();
+        var_dump($r);
+        */
     }
+
+
+    private function testPdoStatement($output){
+        //$this->conn->fetchColumn("SELECT count(*) FROM demo");
+        /*
+        $s=$this->conn->prepare(
+            "INSERT INTO demo
+                (
+                    name,
+                    age
+                ) VALUES (
+                    :name,
+                    :age
+                )"
+        );
+        $name='Kate';
+        $age=16;
+        $s->bindParam(":name", $name, \PDO::PARAM_STR);
+        $s->bindParam(":age", $age, \PDO::PARAM_INT);
+        $s->execute();
+        $lastId=$this->conn->lastInsertId();
+        */
+
+    }
+
+
+
+
 
 }
