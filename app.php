@@ -26,11 +26,13 @@ unset($srr);
 $commands = array();
 $isDevMode = true;
 $emConfig = Setup::createAnnotationMetadataConfiguration(array(ROOT_PATH."/src/Entity"), $isDevMode);
+$driverImpl = new \Doctrine\ORM\Mapping\Driver\YamlDriver(array( ROOT_PATH.'/src/Mapping'));
+$emConfig->setMetadataDriverImpl($driverImpl);
 $entityManager = \Doctrine\ORM\EntityManager::create($config['database'], $emConfig);
 $entityManager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
 $helperSet=ConsoleRunner::createHelperSet($entityManager);
 \Doctrine\ORM\Tools\Console\ConsoleRunner::run($helperSet, $commands);
-uset($commands,$isDevMode,$emConfig,$entityManager,$helperSet);
+uset($commands,$isDevMode,$emConfig,$entityManager,$helperSet,$driverImpl);
 //---doctrine end---
 
 $application = new Application();
